@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!--Note: Formatting is important!! Don't auto-format!-->
+<queries>
+    <query>
+        <input>HIII</input>
+        <output>HIIIa
+</output>
+        <vals type="integer"> 12 </vals>
+    </query>
+    <query>
+        <input>MMM</input>
+        <output>MMMa
+</output>
+        <vals type="integer"> 124 </vals>
+    </query>
+    <query>
+        <input>PPP</input>
+        <output>PPPa
+</output>
+        <vals type="integer"> 123 </vals>
+    </query>
+</queries>
