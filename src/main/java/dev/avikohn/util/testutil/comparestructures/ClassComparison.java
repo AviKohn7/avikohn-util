@@ -6,14 +6,16 @@ import java.util.function.*;
 public class ClassComparison<T,S>{
 	private final Class<T> leftClass;
 	private final Class<S> rightClass;
-	private final Class<?>[] comparersToSkip;
+	private Class<?>[] comparersToSkip = new Class<?>[0];
 	private List<ComparisonResult<T,S>> prevResults;
 	private Flag accessFlag = ContentComparer.DEFAULT_ACCESS_FLAG;
 	private UnaryOperator<String> leftStringModifier = (e)->e;
 	private UnaryOperator<String> rightStringModifier = (e)->e;
-	public ClassComparison(Class<T> leftClass, Class<S> rightClass, Class<?>... comparersToSkip){
+	public ClassComparison(Class<T> leftClass, Class<S> rightClass){
 		this.leftClass = leftClass;
 		this.rightClass = rightClass;
+	}
+	public void skipComparers(Class<?>... comparersToSkip){
 		this.comparersToSkip = comparersToSkip;
 	}
 	public ClassComparison<T,S> setAccessFlag(Flag accessFlag){

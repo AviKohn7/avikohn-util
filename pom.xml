@@ -5,15 +5,17 @@
 
   <groupId>dev.avikohn.util</groupId>
   <artifactId>avikohn-util</artifactId>
-  <version>1.0</version>
+  <version>1.1-alpha</version>
 
   <name>avikohn-util</name>
-  <!-- FIXME change it to the project's website -->
-  <url>http://www.example.com</url>
+  <url>https://www.avikohn.dev/github/avikohn-util</url>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.release>17</maven.compiler.release>
+    <github.global.server>github</github.global.server>
+<!--    <github.global.userName>AviKohn7</github.global.userName> &lt;!&ndash;This and below should not be needed&ndash;&gt;-->
+<!--    <github.global.password>${global.githubAuthToken}</github.global.password>-->
   </properties>
 
   <dependencyManagement>
@@ -78,6 +80,11 @@
         <plugin>
           <artifactId>maven-deploy-plugin</artifactId>
           <version>3.1.2</version>
+            <configuration>
+                <altDeploymentRepository>
+                    internal.repo::file://${project.build.directory}/mvn-repo
+                </altDeploymentRepository>
+            </configuration>
         </plugin>
         <!-- site lifecycle, see https://maven.apache.org/ref/current/maven-core/lifecycles.html#site_Lifecycle -->
         <plugin>
@@ -88,7 +95,54 @@
           <artifactId>maven-project-info-reports-plugin</artifactId>
           <version>3.6.1</version>
         </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-source-plugin</artifactId>
+          <version>3.3.1</version>
+          <executions>
+            <execution>
+              <id>attach-sources</id>
+              <goals>
+                <goal>jar</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
+
       </plugins>
     </pluginManagement>
+    <plugins>
+      <plugin>
+        <groupId>com.github.github</groupId>
+        <artifactId>site-maven-plugin</artifactId>
+        <version>0.12</version>
+        <configuration>
+          <message>Maven artifacts for ${project.version}</message>  <!-- git commit message -->
+          <noJekyll>true</noJekyll>                                  <!-- disable webpage processing -->
+          <outputDirectory>${project.build.directory}/mvn-repo</outputDirectory> <!-- matches distribution management repository url below -->
+          <branch>refs/heads/mvn-repo</branch>                       <!-- remote branch name -->
+          <merge>true</merge>
+          <includes><include>**/*</include></includes>
+          <repositoryName>avikohn-util</repositoryName>      <!-- github repo name -->
+          <repositoryOwner>AviKohn7</repositoryOwner>    <!-- github username  -->
+        </configuration>
+        <executions>
+          <!-- run site-maven-plugin's 'site' target as part of the build's normal 'deploy' phase -->
+          <execution>
+            <goals>
+              <goal>site</goal>
+            </goals>
+            <phase>deploy</phase>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
   </build>
+  <distributionManagement>
+    <repository>
+      <id>internal.repo</id>
+      <name>Temporary Staging Repository</name>
+      <url>file://${project.build.directory}/mvn-repo</url>
+    </repository>
+  </distributionManagement>
 </project>
