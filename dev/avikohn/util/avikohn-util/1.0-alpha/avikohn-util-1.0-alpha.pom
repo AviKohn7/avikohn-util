@@ -14,8 +14,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.release>17</maven.compiler.release>
     <github.global.server>github</github.global.server>
-    <github.global.userName>AviKohn7</github.global.userName>
-    <github.global.password>${global.githubAuthToken}</github.global.password>
+
   </properties>
 
   <dependencyManagement>
@@ -124,7 +123,6 @@
           <includes><include>**/*</include></includes>
           <repositoryName>avikohn-util</repositoryName>      <!-- github repo name -->
           <repositoryOwner>AviKohn7</repositoryOwner>    <!-- github username  -->
-
         </configuration>
         <executions>
           <!-- run site-maven-plugin's 'site' target as part of the build's normal 'deploy' phase -->
