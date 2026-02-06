@@ -9,7 +9,7 @@ import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
 /**
- * A class for reading of a single-type CSV file (see CSVBuilder for creating a CSV file)
+ * A class for reading of a single-type CSV file (see CSVBuilder for creating a CSV file).<br/>
  * Use one of the readX() methods for reading primitive 2D-arrays,
  * or read(parser) to convert to an arbitrary datatype (with the ability to use arrays instead of lists)
  * <br/><br/>

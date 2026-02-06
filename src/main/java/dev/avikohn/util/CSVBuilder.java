@@ -4,9 +4,9 @@ import java.io.IOException;
 import java.nio.file.*;
 
 /**
- * A class to handle incremental building of a CSV file (see CSVReader for CSV parsing).
+ * A class to handle incremental building of a CSV file (see CSVReader for CSV parsing).<br/>
  * Use the addLine(primitive...) or addLine(T[]) to add lines to the file,
- * or addLines(Type[][]) to add multiple lines at a time.
+ * or addLines(Type[][]) to add multiple lines at a time.<br/>
  * While type mixing is allowed, it is not recommended as it makes parsing more difficult (and not
  * supported by the CSVReader class)
  * <br/><br/>
