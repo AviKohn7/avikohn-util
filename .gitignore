@@ -28,4 +28,4 @@ todo.txt
 **/.mvn/
 **/.idea/
 **/target/
-
+src/test/testFiles/*
