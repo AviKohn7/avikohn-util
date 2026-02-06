@@ -7,7 +7,7 @@ import java.util.stream.*;
 
 //todo: support for private and protected comparisons
 public abstract class ContentComparer<T,S,U>{
-    public static final Flag DEFAULT_ACCESS_FLAG = Flag.joinFlags(Flag.STATIC_AND_INSTANCE, Flag.PUBLIC);
+    public static final Flag DEFAULT_ACCESS_FLAG = Flag.joinFlags(Flag.STATIC_AND_INSTANCE, Flag.EXPOSED);
     private ComparisonResult<S,U> previousResult;
 	protected Flag accessFlag = DEFAULT_ACCESS_FLAG;
     private UnaryOperator<String> leftStringTransformFunc = e->e;
@@ -28,7 +28,7 @@ public abstract class ContentComparer<T,S,U>{
      * @return a stream containing both declared and regular Ts, with possible duplicates
      */
     protected Stream<T> getFullTStream(Class<?> theClass){
-        Stream<T> maybePublicStream = accessFlag.includesFlag(Flag.PUBLIC) ? getTStream(theClass) : Stream.empty();
+        Stream<T> maybePublicStream = accessFlag.includesFlag(Flag.EXPOSED) ? getTStream(theClass) : Stream.empty();
         Stream<T> maybeDeclaredStream = accessFlag.includesFlag(Flag.DECLARED) ? getDeclaredTStream(theClass) : Stream.empty();
         return Stream.concat(maybePublicStream, maybeDeclaredStream);
     }
@@ -62,8 +62,13 @@ public abstract class ContentComparer<T,S,U>{
     }
     private boolean matchesAccessFlag(T val){
     	boolean isStatic = isStatic(val);
-    	return isStatic ? accessFlag.includesFlag(Flag.STATIC) : accessFlag.includesFlag(Flag.INSTANCE);
+        boolean matches = isStatic ? accessFlag.includesFlag(Flag.STATIC) : accessFlag.includesFlag(Flag.INSTANCE);
+        if(!Flag.ONLY_ALL.isDisjointWith(accessFlag)){
+            matches = matches && !accessFlag.isDisjointWith(getAccessModifierFlag(val));
+        }
+    	return matches;
     }
+
     private String stringifyWithModifiers(T val, Class<?> theClass){
     	String staticInfo = isStatic(val) && accessFlag.includesFlag(Flag.STATIC_AND_INSTANCE) ? "static " : ""; //only add if both static and instance are enabled
         String accessModifier = getAccessModifierString(val);
@@ -78,6 +83,18 @@ public abstract class ContentComparer<T,S,U>{
     }
     private boolean isStatic(T val){
         return Modifier.isStatic(getModifiers(val));
+    }
+    private Flag getAccessModifierFlag(T val){
+        int modifiers = getModifiers(val);
+        if(Modifier.isPublic(modifiers)){
+            return Flag.ONLY_PUBLIC;
+        } else if(Modifier.isProtected(modifiers)){
+            return Flag.ONLY_PROTECTED;
+        } else if(Modifier.isPrivate(modifiers)){
+            return Flag.ONLY_PRIVATE;
+        } else { //is package-private
+            return Flag.ONLY_PACKAGE_PRIVATE; //maybe just return empty string, but I think this is more clear
+        }
     }
     private String getAccessModifierString(T val){
         int modifiers = getModifiers(val);
@@ -99,10 +116,10 @@ public abstract class ContentComparer<T,S,U>{
     	return accessFlag;
     }
     private void setAccessFlag(Flag flag){
-        if(Flag.mutualFlag(Flag.DECLARED_AND_PUBLIC, flag).equals(Flag.EMPTY)){
+        if(Flag.DECLARED_AND_EXPOSED.isDisjointWith(flag)){
             throw new IllegalArgumentException("AccessFlag must contain the DECLARED and/or the PUBLIC flag. The current flag is " + flag);
         }
-        if(Flag.mutualFlag(Flag.STATIC_AND_INSTANCE, flag).equals(Flag.EMPTY)){
+        if(Flag.STATIC_AND_INSTANCE.isDisjointWith(flag)){
             throw new IllegalArgumentException("AccessFlag must contain the STATIC and/or the INSTANCE flag" + flag);
         }
         this.accessFlag = flag;

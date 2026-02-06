@@ -5,6 +5,8 @@ import dev.avikohn.util.testutil.comparestructures.CompExample2;
 import org.junit.jupiter.api.Test;
 import org.opentest4j.AssertionFailedError;
 
+import java.util.Comparator;
+
 import static dev.avikohn.util.testutil.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -69,5 +71,9 @@ class AssertionsTest{
     @Test
     void testAssertStructuresIdentical(){
         //assertStructuresIdentical(CompExample1.class, CompExample2.class);
+    }
+    @Test
+    void testAssertArraysEquivalentAndSorted(){
+        assertArraysEquivalentAndSorted(new Integer[]{1,2,3}, new Integer[]{1,3,2}, Comparator.comparing(e->e/2));
     }
 }

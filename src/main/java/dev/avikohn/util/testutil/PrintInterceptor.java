@@ -51,6 +51,7 @@ public class PrintInterceptor implements AfterEachCallback, BeforeEachCallback, 
         newSysOut = null;
         System.setOut(oldSysOut);
         System.setErr(oldSysErr);
+
     }
     /**
      * Returns and clears the current print output
