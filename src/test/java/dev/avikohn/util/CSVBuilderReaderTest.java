@@ -143,11 +143,9 @@ public class CSVBuilderReaderTest{
     @Test
     public void testCreateFile() throws IOException{
         CSVBuilder builder = getIntBuilder();
-        boolean success = builder.save(FOLDER, "builder", true);
-        assertTrue(success, "1 failed");
+        builder.save(FOLDER, "builder", true);
 
-        boolean success2 = builder.save(FOLDER, "builder2", false);
-        assertTrue(success2, "2 failed");
+        builder.save(FOLDER, "builder2", false);
 
         CSVReader reader1 = new CSVReader(FOLDER, "builder");
         CSVReader reader2 = new CSVReader(FOLDER, "builder2");
@@ -159,8 +157,7 @@ public class CSVBuilderReaderTest{
     public void testIntFile() throws IOException{
         CSVBuilder builder = getIntBuilder();
         String name = "BuilderInt";
-        boolean success = builder.save(FOLDER, name, true);
-        assertTrue(success, "Int failed");
+        builder.save(FOLDER, name, true);
 
         CSVReader reader1 = new CSVReader(FOLDER, name);
 
@@ -170,8 +167,7 @@ public class CSVBuilderReaderTest{
     public void testLongFile() throws IOException{
         CSVBuilder builder = getLongBuilder();
         String name = "BuilderLong";
-        boolean success = builder.save(FOLDER, name, true);
-        assertTrue(success, "Long failed");
+        builder.save(FOLDER, name, true);
 
         CSVReader reader1 = new CSVReader(FOLDER, name);
 
@@ -181,8 +177,7 @@ public class CSVBuilderReaderTest{
     public void testDoubleFile() throws IOException{
         CSVBuilder builder = getDoubleBuilder();
         String name = "BuilderDouble";
-        boolean success = builder.save(FOLDER, name, true);
-        assertTrue(success, "Double failed");
+        builder.save(FOLDER, name, true);
 
         CSVReader reader1 = new CSVReader(FOLDER, name);
 
@@ -192,8 +187,7 @@ public class CSVBuilderReaderTest{
     public void testCharFile() throws IOException{
         CSVBuilder builder = getCharBuilder();
         String name = "BuilderChar";
-        boolean success = builder.save(FOLDER, name, true);
-        assertTrue(success, "Char failed");
+        builder.save(FOLDER, name, true);
 
         CSVReader reader1 = new CSVReader(FOLDER, name);
 
@@ -204,8 +198,7 @@ public class CSVBuilderReaderTest{
     public void testPointFile() throws IOException{
         CSVBuilder builder = getPointBuilder();
         String name = "BuilderPoint";
-        boolean success = builder.save(FOLDER, name, true);
-        assertTrue(success, "Point failed");
+        builder.save(FOLDER, name, true);
 
         CSVReader reader1 = new CSVReader(FOLDER, name);
 
@@ -217,8 +210,7 @@ public class CSVBuilderReaderTest{
         CSVBuilder builder = new CSVBuilder();
         String name = "SingleLine";
         builder.addLine(inputValues[0]);
-        boolean success = builder.save(FOLDER, name, true);
-        assertTrue(success, "Single Line failed");
+        builder.save(FOLDER, name, true);
 
         CSVReader reader = new CSVReader(FOLDER, name);
         Assertions.assert2DArraysEquivalent(new int[][]{inputValues[0]}, reader.readInt());
@@ -229,8 +221,7 @@ public class CSVBuilderReaderTest{
         CSVBuilder builder = new CSVBuilder();
         String name = "SingleInput";
         builder.addLine(inputValues[0][0]);
-        boolean success = builder.save(FOLDER, name, true);
-        assertTrue(success, "Single Input failed");
+        builder.save(FOLDER, name, true);
 
         CSVReader reader = new CSVReader(FOLDER, name);
         Assertions.assert2DArraysEquivalent(new int[][]{{inputValues[0][0]}}, reader.readInt());
@@ -241,8 +232,7 @@ public class CSVBuilderReaderTest{
         CSVBuilder builder = new CSVBuilder("|");
         setIntBuilder(builder);
         String name = "BuilderDelim";
-        boolean success = builder.save(FOLDER, name, true);
-        assertTrue(success, "Delim failed");
+        builder.save(FOLDER, name, true);
 
         CSVReader reader1 = new CSVReader(FOLDER, name).setDelimiter("|");
 

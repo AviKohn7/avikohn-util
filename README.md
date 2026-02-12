@@ -4,7 +4,7 @@ for both testing and production code.
 
 # How to use
 To use a single class, you can just copy that class but without the
-package declaration.
+package declaration (as long as that class does not depend on other classes in the library).
 
 To include from the entire package, add this to your pom.xml (the ellipses represent other 
 dependencies or repositories and serve to show where to put the data, only copy the repository and dependency tag):

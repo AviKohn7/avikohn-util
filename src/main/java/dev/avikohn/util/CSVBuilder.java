@@ -88,18 +88,17 @@ public class CSVBuilder{
      * Save the csv data to a file
      * @param path the path to save the data to
      * @param rewrite True to rewrite the file, false to append
-     * @return True if successful, false if not
+     * @throws RuntimeException if something went wrong when trying to save
      */
-    public boolean save(Path path, boolean rewrite){
+    public void save(Path path, boolean rewrite){
         try {
-//            Path parent = path.getParent();
-//            if (parent != null) {
-//                Files.createDirectories(parent);
-//            }
+            Path parent = path.getParent();
+            if (parent != null) {
+                Files.createDirectories(parent);
+            }
             Files.write(path, data.toString().getBytes(), StandardOpenOption.CREATE, rewrite ? StandardOpenOption.TRUNCATE_EXISTING : StandardOpenOption.APPEND);
-            return true;
         } catch(IOException e){
-            return false;
+            throw new RuntimeException("Failed to save file to path " + path, e);
         }
     }
     /**
@@ -107,21 +106,21 @@ public class CSVBuilder{
      * @param folder the name of the folder to save in
      * @param name the name of the resulting file
      * @param rewrite True to rewrite the file, false to append
-     * @return True if successful, false if not
+     *  @throws RuntimeException if something went wrong when trying to save
      */
-    public boolean save(String folder, String name, boolean rewrite){
+    public void save(String folder, String name, boolean rewrite){
         if(name == null || name.isEmpty()){
             throw new IllegalArgumentException("Name must not be empty or null");
         }
-        return save(Path.of(folder, name+".csv"), rewrite);
+        save(Path.of(folder, name+".csv"), rewrite);
     }
     /**
      * Save the csv data to a file relative to the folder that the JDK is running in
      * @param name the name of the resulting file
      * @param rewrite True to rewrite the file, false to append
-     * @return True if successful, false if not
+     * @throws RuntimeException if something went wrong when trying to save
      */
-    public boolean save(String name, boolean rewrite){
-        return save("", name, rewrite);
+    public void save(String name, boolean rewrite){
+        save("", name, rewrite);
     }
 }
